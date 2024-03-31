@@ -1,0 +1,156 @@
+class Node():
+    def __init__(self,data,next1,next2,next3=None,next4=None):
+        self.data=data
+        self.next1=next1
+        self.next2=next2
+        self.next3=next3
+        self.next4=next4
+    def __str__(self):
+        temp=str(self.data)
+        return temp
+
+
+def quicksort(nums):
+    if len(nums) <= 1:
+        return nums
+    else:
+        q = random.choice(nums)
+        s_nums = []
+        m_nums = []
+        e_nums = []
+        for n in nums:
+            try:
+                t=n.data
+            except:
+                t=n
+            try:
+                s=q.data
+            except:
+                s=q
+            if t < s:
+                s_nums.append(n)
+            elif t > s:
+                m_nums.append(n)
+            else:
+                e_nums.append(n)
+        return quicksort(s_nums) + e_nums + quicksort(m_nums)
+def dict_print(d):
+    for i in d.keys():
+        print(i," : ",d[i])
+def list_print(l):
+    print("Список:")
+    for i in l:
+        print(i,end=" ")
+    print()
+def plus(one,two):
+    try:
+        temp=one+two
+    except:
+        try:
+            temp=one.data+two.data
+        except:
+            try:
+                temp=one.data+two
+            except:
+                temp=one+two.data
+    return temp
+  
+def node_down(d,l,s=""):#кодируем слова
+    try:
+        node_down(d,l.next1, "0"+s) 
+        node_down(d,l.next2, "1"+s)
+    except:
+        if l in d.keys():
+            d[l].append(s)
+        else:
+            d[l]=[s]
+    return d
+    
+def node_down_two(d,l,s=""):
+    try:
+        node_down_two(d,l.next1, "0"+s) 
+        node_down_two(d,l.next2, "1"+s)
+        node_down_two(d,l.next3, "2"+s) 
+        node_down_two(d,l.next4, "3"+s)
+    except:
+        if l in d.keys():
+            d[l].append(s)
+        else:
+            d[l]=[s]
+    return d
+    
+    
+def redundancy(d):
+    temp=0
+    for i in d.keys():
+        for j in d[i]:
+            temp+=i*len(j)
+    print("Избыточность: ",temp)
+    
+def Haffman(d):
+    lis=[]
+    for i in d.keys():
+        lis.append(d[i])
+    lis.sort()
+    list_print(lis)
+    dev=dict()
+    while(len(lis)>1):#Складываем два наименьших элемента, пока не останится один
+        temp=plus(lis[0],lis[1])
+        lis[0]=Node(temp,lis[0],lis[1])
+        lis.pop(1)
+        lis=quicksort(lis)
+        #list_print(lis)
+    l=[]
+    for i in lis:
+        dev=node_down(dev,i)
+    print("Кодовые слова относительно вероятности:")
+    dict_print(dev)
+    redundancy(dev)
+
+def Haffman_two(d):
+    lis=[]
+    for i in d.keys():
+        lis.append(d[i])
+    lis.sort()
+    list_print(lis)
+    dev=dict()
+    while(len(lis)>1):#Складываем четыре наименьших элемента, пока не останится один
+        temp=plus(lis[0],lis[1])
+        temp=plus(temp,lis[2])
+        temp=plus(temp,lis[3])
+        lis[0]=Node(temp,lis[0],lis[1],lis[2],lis[3])
+        for i in range(3):
+            lis.pop(1)
+        lis=quicksort(lis)
+        #list_print(lis)
+    l=[]
+    for i in lis:
+        dev=node_down_two(dev,i)
+    print("Кодовые слова относительно вероятности:")
+    dict_print(dev)
+    redundancy(dev)
+    
+    
+import random
+dex=dict()
+alls=0
+with open("File.txt","r") as var:# Записываем словарь по ключу: Буква, значение: Их количество 
+    temp=var.readline()
+    while temp:
+        for i in temp:
+            if i=="\n":
+                continue
+            if i in dex.keys():
+                dex[i]=dex[i]+1
+            else:
+                dex[i]=1
+            alls+=1
+        temp=var.readline()
+print("Количество: ")
+dict_print(dex)#Вывод словаря
+for i in dex.keys():# Поиск вероятности
+    dex[i]=round(dex[i]/alls,3)
+print("Вероятности: ")
+dict_print(dex)
+Haffman(dex)
+Haffman_two(dex)
