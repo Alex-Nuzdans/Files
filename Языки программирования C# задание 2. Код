@@ -249,6 +249,10 @@ class HelloWorld {
         LS1=x-LS1;
         Console.WriteLine("Координаты первого отрезка(y сокращён)");
         LS1.print();
+        int z1=LS1;
+        Console.WriteLine("Конвертация через переменную int: "+z1);
+        double z2=(double)LS1;
+        Console.WriteLine("Конвертация через переменную double: "+z2);
         if (LS1>LS2){
             Console.WriteLine("Отрезки пересекаются!");
         }
