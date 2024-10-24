@@ -1,0 +1,258 @@
+using System;
+class door{
+    protected bool Open;
+    protected bool Lock;
+    
+    public bool op{
+        get{return Open;}
+        set{Open=value;}
+    }
+    public bool lo{
+        get{return Lock;}
+        set{Lock=value;}
+    }
+    
+    public door(){
+        Open=false;
+        Lock=false;
+    }
+    
+    public door(door D){
+        this.Open=D.Open;
+        this.Lock=D.Lock;
+    }
+    public bool Close(){//Можно ли пройти
+        if ((Open==false) && (Lock==false)){
+            return false;
+        }
+        return true;
+    }
+    public override string ToString(){
+        return("Открыта: "+Open+"\nЗафиксирована: "+Lock);
+    }
+}
+
+class Gates: door{
+    private double Width;//Ширина ворот
+    private double Price;//Цена ворот
+    private string Owner;//Владелец ворот
+    private string Manufacturer;//производитель ворот
+    
+    public Gates(){
+        Width=0;
+        Price=0;
+        Owner="";
+        Manufacturer="";
+    }
+    public Gates(door d1,double Width,double Price,string Owner, string Manufacturer):base(d1){
+        this.Width=Width;
+        this.Price=Price;
+        this.Owner=Owner;
+        this.Manufacturer=Manufacturer;
+    }
+    public double prise_convert(string s){
+        if(s=="dolor"){
+            return Price/96.5;
+        }
+        else if(s=="euro"){
+            return Price/104;
+        }
+        else if(s=="yane"){
+            return Price/13.5;
+        }
+        else{
+            Console.WriteLine("Не конвертируем");
+        }
+        return Price;
+    }
+    public bool truck(){
+        if((Width>=4)&&(Open==true)){
+            return true;
+        }
+        return false;
+    }
+    
+    public override string ToString(){
+        return("Ворота открвыты: "+Open+"\nВорота зафиксирована: "+Lock+"\nШиринка ворот: "+Width+" м.\nЦена ворот: "+Price+"\nХозяин ворот: "+Owner+"\nИзготовитель ворот: "+Manufacturer);
+    }
+}
+
+class LineSegment{
+    private double x;
+    private double y;
+    
+    public double nx{
+        get{return x;}
+        set{x=value;}
+    }
+    public double ny{
+        get{return y;}
+        set{y=value;}
+    }
+    
+    public LineSegment(){
+        x=0;
+        y=0;
+    }
+    public LineSegment(double x,double y){
+        this.x=x;
+        this.y=y;
+    }
+    public bool intersection(LineSegment L){
+        if (((x>=L.x)&&(x<=L.y))||((y>=L.x)&&(y<=L.y))||((L.x>=x)&&(L.x<=y))||((L.y>=x)&&(L.y<=y))){
+            return true;
+        }
+        return false;
+    }
+   
+}
+class LineSegment2{
+    private double x;
+    private double y;
+    
+    public double nx{
+        get{return x;}
+        set{x=value;}
+    }
+    public double ny{
+        get{return y;}
+        set{y=value;}
+    }
+    
+    public LineSegment2(){
+        x=0;
+        y=0;
+    }
+    public LineSegment2(double x,double y){
+        this.x=x;
+        this.y=y;
+    }
+    public static double operator !(LineSegment2 L){
+        if (L.x>L.y){    
+            return L.x-L.y;
+        }
+        else if(L.x<L.y){
+            return L.y-L.x;
+        }
+        return 0;
+    }
+    public static LineSegment2 operator ++(LineSegment2 L){
+        if (L.x>L.y){    
+            L.x+=1;
+            L.y-=1;
+        }
+        else if(L.x<L.y){
+            L.x-=1;
+            L.y+=1;
+        }
+        return L;
+    }
+    public static LineSegment2 operator -(LineSegment2 L,int nx){
+        L.x-=nx;
+        return L;
+    }
+    public static LineSegment2 operator -(int ny,LineSegment2 L){
+        L.y-=ny;
+        return L;
+    }
+    public static implicit operator int (LineSegment2 L){
+        return Convert.ToInt32(L.x);
+    }
+    public static explicit operator double(LineSegment2 L){
+        return L.y;
+    }
+    public static bool operator <(LineSegment2 L1,LineSegment2 L2){
+        if (((L1.x>=L2.x)&&(L1.x<=L2.y))||((L1.y>=L2.x)&&(L1.y<=L2.y))||((L2.x>=L1.x)&&(L2.x<=L1.y))||((L2.y>=L1.x)&&(L2.y<=L1.y))){
+            return true;
+        }
+        return false;
+    }
+    public static bool operator >(LineSegment2 L1,LineSegment2 L2){
+        return false;
+    }
+    public void print(){
+        Console.WriteLine("X: "+x+" Y: "+y);
+    }
+    
+}
+    
+class HelloWorld {
+  static void Main() {
+    Console.WriteLine("Введите информацию о каком классе вы ищете(1, 2, 3):");
+    string S=Console.ReadLine();
+    try{
+    if(S=="1"){
+        door D1=new door();
+        Console.WriteLine("Введите ширину ворот");
+        double one=Convert.ToDouble(Console.ReadLine());
+        Console.WriteLine("Введите цену ворот");
+        double two=Convert.ToDouble(Console.ReadLine());
+        Console.WriteLine("Введите владельца ворот");
+        string tree=Console.ReadLine();
+        Console.WriteLine("Введите производителя ворот");
+        string fore=Console.ReadLine();
+        Gates G=new Gates(D1,one,two,tree,fore );
+        Console.WriteLine(G);
+        if (G.truck()){
+            Console.WriteLine("Грузовик проедет!");
+        }
+        else{
+            Console.WriteLine("Грузовик не проедет!");
+        }
+        Console.WriteLine("Введите валюту(dolor, euro, yane):");
+        Console.WriteLine("Цена равна: "+ (G.prise_convert(Console.ReadLine())));
+    }
+    else if(S=="2"){
+        Console.WriteLine("Введите координаты первой прямой");
+        double x1=Convert.ToInt32(Console.ReadLine());
+        double y1=Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Введите координаты второй прямой");
+        double x2=Convert.ToInt32(Console.ReadLine());
+        double y2=Convert.ToInt32(Console.ReadLine());
+        LineSegment LS1 = new LineSegment(x1,y1);
+        LineSegment LS2 = new LineSegment(x2,y2);
+        if (LS1.intersection(LS2)){
+            Console.WriteLine("Они пересекаются!");
+        }
+        else{
+            Console.WriteLine("Они не пересекаются!");
+        }
+    }
+    else if (S=="3"){
+        Console.WriteLine("Введите координаты первой прямой");
+        double x1=Convert.ToInt32(Console.ReadLine());
+        double y1=Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Введите координаты второй прямой");
+        double x2=Convert.ToInt32(Console.ReadLine());
+        double y2=Convert.ToInt32(Console.ReadLine());
+        LineSegment2 LS1 = new LineSegment2(x1,y1);
+        LineSegment2 LS2 = new LineSegment2(x2,y2);
+        Console.WriteLine("Длинна первого отрезка"+!LS1);
+        Console.WriteLine("Координаты первого отрезка");
+        LS1.print();
+        LS1++;
+        Console.WriteLine("Расшиернные координаты первого отрезка");
+        LS1.print();
+        Console.WriteLine("Введите целое число: ");
+        int x=Convert.ToInt32(Console.ReadLine());
+        LS1=LS1- x;
+        Console.WriteLine("Координаты первого отрезка(x сокращён)");
+        LS1.print();
+        Console.WriteLine("Введите целое число: ");
+        x=Convert.ToInt32(Console.ReadLine());
+        LS1=x-LS1;
+        Console.WriteLine("Координаты первого отрезка(y сокращён)");
+        LS1.print();
+        if (LS1>LS2){
+            Console.WriteLine("Отрезки пересекаются!");
+        }
+        else{
+            Console.WriteLine("Отрезки не пересекаются!");
+        }
+    }
+  }
+   catch{
+       Console.WriteLine("Простите, что-то пошло не так.");
+   }   
+  }
+}
