@@ -226,11 +226,11 @@ class HelloWorld {
     }
     else if (S=="3"){
         Console.WriteLine("Введите координаты первой прямой");
-        double x1=Convert.ToInt32(Console.ReadLine());
-        double y1=Convert.ToInt32(Console.ReadLine());
+        double x1=Convert.ToDouble(Console.ReadLine());
+        double y1=Convert.ToDouble(Console.ReadLine());
         Console.WriteLine("Введите координаты второй прямой");
-        double x2=Convert.ToInt32(Console.ReadLine());
-        double y2=Convert.ToInt32(Console.ReadLine());
+        double x2=Convert.ToDouble(Console.ReadLine());
+        double y2=Convert.ToDouble(Console.ReadLine());
         LineSegment2 LS1 = new LineSegment2(x1,y1);
         LineSegment2 LS2 = new LineSegment2(x2,y2);
         Console.WriteLine("Длинна первого отрезка"+!LS1);
