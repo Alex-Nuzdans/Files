@@ -193,6 +193,12 @@ class HelloWorld {
         string fore=Console.ReadLine();
         Gates G=new Gates(D1,one,two,tree,fore );
         Console.WriteLine(G);
+        if (G.Close()){
+            Console.WriteLine("Ворота открыты!");
+        }
+        else{
+            Console.WriteLine("Заперто!");
+        }
         if (G.truck()){
             Console.WriteLine("Грузовик проедет!");
         }
